@@ -3,6 +3,7 @@ import { ApiService } from './api';
 import { Config } from '../app/model/Config';
 import { Subject } from 'rxjs';
 import { LogResult } from 'src/app/model/ApiResult';
+import { LogBag } from '../app/model/LogBag';
 
 @Injectable()
 export class LogService {
@@ -65,7 +66,8 @@ export class LogService {
 
   public getLog(since?: number): Promise<LogResult> {
     if (!since) since = 0;
-    return this.api.get(`log/${this._selectedDb.id}/${since}`);
+    return this.api.get(`log/${this._selectedDb.id}/${since}`)
+    .then((r) => LogResult.fromApi(r) );
   }
 
   public startMonitor(since?: number) {
@@ -96,10 +98,11 @@ export class LogService {
 
     this._busy = true;
     this.api.get(`log/${this._selectedDb.id}/${this.lastChecked}`)
-    .then((r: LogResult) => {
+    .then((r) => {
+      const lr = LogResult.fromApi(r);
       this._busy = false;
-      this.newLogs.next(r);
-      this.lastChecked = r.until;
+      this.newLogs.next(lr);
+      this.lastChecked = lr.until;
     })
     .catch((err) => {
       this._busy = false;

@@ -1,6 +1,17 @@
 <h3>{{config?.name}}</h3>
 <p>
-  Last checked at: <strong>{{ lastChecked | date: 'H:mm:ss' }}</strong> 
+  Last checked at: <strong>{{ lastChecked | date: 'H:mm:ss' }}</strong>
   <button class="btn btn-link" (click)="toggleMonitor()">{{ log.monitoring ? 'Pause' : 'Resume'}}</button>
   <i *ngIf="log.busy" class="fa fa-spinner d-inline-block ml-2"></i>
+
+  <span class="float-right">
+    <button class="btn btn-sm btn-danger mr-4" (click)="bags = []"><i class="fa fa-trash"></i> Clear</button>
+    <button class="btn btn-sm btn-default" (click)="toggleCollapseAll()"><i [ngClass]="{ 'fa-chevron-up': !allCollapsed, 'fa-chevron-down': allCollapsed }"
+        class="fa fa-chevron-up"></i> all</button>
+  </span>
+
 </p>
+
+<div class="bag-container">
+  <app-log-row *ngFor="let b of bags" [bag]="b"></app-log-row>
+</div>

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren } from '@angular/core';
 import { Config } from '../../model/Config';
 import { LogService } from '../../../services/logService';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { LogBag } from '../../model/LogBag';
+import { LogRowComponent } from '../../components/log-row/log-row.component';
 
 @Component({
   selector: 'app-live',
@@ -11,6 +13,9 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 export class LiveComponent implements OnInit {
   config: Config;
   lastChecked: number;
+  bags: LogBag[] = [];
+  @ViewChildren(LogRowComponent) rows;
+  allCollapsed = false;
 
   constructor(
     public log: LogService,
@@ -21,11 +26,23 @@ export class LiveComponent implements OnInit {
     });
 
     this.log.newLogs.subscribe(l => {
+      console.log("Getting news", l);
       this.lastChecked = + new Date();
-    })
+
+      this.bags.unshift.apply(this.bags, l.log);
+      
+    });
   }
 
   ngOnInit() {
+  }
+
+  public toggleCollapseAll() {
+    this.allCollapsed = !this.allCollapsed;
+
+    this.rows.forEach((r: LogRowComponent) => {
+      r.collapsed = this.allCollapsed;
+    });
   }
 
   private load(configId: number) {

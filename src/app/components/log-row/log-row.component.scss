@@ -1,0 +1,34 @@
+@import '../../../styles/colors';
+
+.card {
+  font-size: .9rem;
+  border-left: 3px solid;
+}
+
+.badge {
+  font-size: 85%;
+  vertical-align: text-bottom;
+}
+
+.selected {
+  .card-header {
+    background-color: rgba(0,0,0, .1);
+  }
+
+  .card-body {
+    background-color: rgba(0,0,0, .04);
+  }
+}
+
+pre {
+  border-left: 1px solid #555;
+  padding: 4px;
+}
+
+.audit { border-left-color: $primary; }
+.no-log { border-left-color: $secondary; }
+.error { border-left-color: $danger; }
+.warning { border-left-color: $warning; }
+.info { border-left-color: $info; }
+.debug { border-left-color: $light; }
+.extra-debug { border-left-color: $light; }

@@ -16,6 +16,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { LogService } from '../services/logService';
 import { HistoryComponent } from './pages/history/history.component';
 import { LiveComponent } from './pages/live/live.component';
+import { LogRowComponent } from './components/log-row/log-row.component';
+import { LogLevelPipe } from './log-level.pipe';
+import { XdebugMessageComponent } from './components/xdebug-message/xdebug-message.component';
+import { SqlMessageComponent } from './components/sql-message/sql-message.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +29,10 @@ import { LiveComponent } from './pages/live/live.component';
     LoaderComponent,
     HistoryComponent,
     LiveComponent,
+    LogRowComponent,
+    LogLevelPipe,
+    XdebugMessageComponent,
+    SqlMessageComponent,
   ],
   imports: [
     BrowserModule,

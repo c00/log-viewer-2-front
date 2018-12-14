@@ -29,6 +29,7 @@
     "ngx-bootstrap": "^3.0.1",
     "popper": "^1.0.1",
     "rxjs": "^6.0.0",
+    "sql-formatter": "^2.3.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

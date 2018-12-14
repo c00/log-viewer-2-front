@@ -1,0 +1,58 @@
+<div class="card bg-light mb-2" [ngClass]="bag.levelColor">
+
+  <div class="card-header">
+    <button class="btn btn-sm btn-light float-right" (click)="collapsed = !collapsed; $event.stopPropagation()">
+      <i [ngClass]="{ 'fa-chevron-up': !collapsed, 'fa-chevron-down': collapsed }" class="fa"></i>
+    </button>
+    <div class="row">
+      <div class="col-md-auto">
+        <strong>{{ bag.date | date : 'yyyy-MM-dd H:mm:ss '}}</strong>
+      </div>
+      <div class="col-md">{{bag.verb}} {{bag.url}}</div>
+      <div class="col-md-2">
+        {{bag.ip}}
+      </div>
+      <div class="col-md-1">
+        {{bag.duration}}
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="card-body" [class.d-none]="collapsed">
+    <div class="row" *ngFor="let i of bag.logItems">
+      <div class="col">
+        {{ i?.date | date : 'H:mm:ss' }} <span class="badge badge-info">{{ i.tag }}</span> {{ i.level | logLevel }}:
+
+        <span *ngIf="!i.object">{{i.message}}</span>
+        <a *ngIf="i.object" href="javascript:void(0)" (click)="i.showObject = !i.showObject">{{i.message}}</a>
+        -
+        <a href="javascript:void(0)" (click)="i.showTrace = !i.showTrace">{{i.caller}}</a>
+        <span *ngIf="i.showObject">
+          <pre *ngIf="i.message !== 'sql'">{{i.object | json}}</pre>
+          <app-xdebug-message [message]="i.object.xdebug_message" *ngIf="i.object.xdebug_message"></app-xdebug-message>
+          <app-sql-message [message]="i.object" *ngIf="i.message === 'sql'"></app-sql-message>
+        </span>
+        <div *ngIf="i.showTrace">
+          <ul>
+            <li *ngFor="let t of i.trace">
+              {{t.function}}
+              <i>{{t.file}}:</i>
+              <strong class="d-inline-block ml-2">{{t.line}}</strong>
+            </li>
+          </ul>
+        </div>
+
+
+
+
+      </div>
+
+    </div>
+
+    <!-- <p class="card-text">
+      {{ i?.date | date : 'H:mm:ss' }}
+    </p> -->
+  </div>
+</div>
