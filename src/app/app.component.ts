@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+
+import { LogService } from '../services/logService';
+import { Config } from './model/Config';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +9,14 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'cirque-library';
-  modalRef: BsModalRef;
-  collapsed = true;
+  configs: Config[] = [];
   
-  constructor() {
+  constructor(public log: LogService) {
+    this.log.getConfigs().then(c => this.configs = c);
+  }
 
+  public selectDb(c: Config) {
+    this.log.selectedDb = c;
   }
 
 }

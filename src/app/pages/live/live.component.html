@@ -1,0 +1,6 @@
+<h3>{{config?.name}}</h3>
+<p>
+  Last checked at: <strong>{{ lastChecked | date: 'H:mm:ss' }}</strong> 
+  <button class="btn btn-link" (click)="toggleMonitor()">{{ log.monitoring ? 'Pause' : 'Resume'}}</button>
+  <i *ngIf="log.busy" class="fa fa-spinner d-inline-block ml-2"></i>
+</p>

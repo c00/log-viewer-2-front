@@ -12,6 +12,10 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { LoaderComponent } from './components/loader/loader.component';
 import { InlineSVGModule } from 'ng-inline-svg';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { LogService } from '../services/logService';
+import { HistoryComponent } from './pages/history/history.component';
+import { LiveComponent } from './pages/live/live.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +23,8 @@ import { InlineSVGModule } from 'ng-inline-svg';
     HomeComponent,
     NotFoundComponent,
     LoaderComponent,
+    HistoryComponent,
+    LiveComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,10 +32,12 @@ import { InlineSVGModule } from 'ng-inline-svg';
     HttpClientModule,
     ModalModule.forRoot(),
     CollapseModule.forRoot(),
+    BsDropdownModule.forRoot(),
     InlineSVGModule.forRoot({ baseUrl: '/assets/svg/' }),
   ],
   providers: [
     ApiService,
+    LogService,
   ],
   bootstrap: [AppComponent]
 })

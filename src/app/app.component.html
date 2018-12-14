@@ -1,11 +1,24 @@
 <header class="">
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="javascript:void(0)">Log Viewer</a>
+    <a class="navbar-brand" [routerLink]="['/']" href="javascript:void(0)">Log Viewer</a>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown" dropdown>
+          <a class="nav-link dropdown-toggle" href="javascript:void(0)" dropdownToggle>
+            <span class="fa fa-database"></span> {{ log.selectedDb.name }}
+          </a>
+          <div class="dropdown-menu" *dropdownMenu aria-labelledby="navbarDropdown">
+            <a *ngFor="let c of configs" class="dropdown-item" (click)="selectDb(c)" href="javascript:void(0)">{{c.name}}</a>
+          </div>
+        </li>
+      </ul>
+    </div>
   </nav>
 </header>
 
 <!-- Begin page content -->
-<main role="main" class="container mt-2 position-relative">
+<main role="main" class="container-fluid mt-2 position-relative">
   <router-outlet></router-outlet>
 </main>
