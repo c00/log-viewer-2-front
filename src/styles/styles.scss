@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+html, body, app-root {
+  display: block;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+@import "colors";
+//@import "variables";
+@import "node_modules/bootswatch/dist/materia/variables";
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootswatch/dist/materia/bootswatch";
+
