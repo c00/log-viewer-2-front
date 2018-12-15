@@ -10,7 +10,13 @@
             <span class="fa fa-database"></span> {{ log.selectedDb.name }}
           </a>
           <div class="dropdown-menu" *dropdownMenu aria-labelledby="navbarDropdown">
-            <a *ngFor="let c of configs" class="dropdown-item" (click)="selectDb(c)" href="javascript:void(0)">{{c.name}}</a>
+            <span *ngFor="let c of configs">
+              <h6 class="dropdown-header">{{c.name}}</h6>
+              <a class="dropdown-item" [routerLink]="[c.id, 'live']" href="javascript:void(0)"><i class="fa fa-refresh"></i> Live view</a>
+              <a class="dropdown-item" [routerLink]="[c.id, 'history']" href="javascript:void(0)"><i class="fa fa-history"></i> History View</a>
+              <div class="dropdown-divider"></div>
+            </span>
+
           </div>
         </li>
       </ul>

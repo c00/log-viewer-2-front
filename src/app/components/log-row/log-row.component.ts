@@ -11,7 +11,9 @@ export class LogRowComponent implements OnInit {
   selected = false;
   collapsed = false;
 
-  constructor() { }
+  constructor() { 
+    if (localStorage.getItem('allCollapsed') === 'true') this.collapsed = true;
+  }
 
   ngOnInit() {
   }

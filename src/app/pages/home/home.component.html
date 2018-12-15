@@ -1,13 +1,13 @@
 <h2>Connect to a database</h2>
 
 <div class="row">
-  <div class="col-md-6" *ngFor="let c of configs">
+  <div class="col-md-6 pb-4" *ngFor="let c of configs">
 
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">{{c.name}}</h5>
-        <a [routerLink]="[c.id, 'live']" href="javascript:void(0)" class="btn btn-primary m-2">Live view</a>
-        <a [routerLink]="[c.id, 'history']" href="javascript:void(0)" class="btn btn-secondary m-2">History</a>
+        <a [routerLink]="[c.id, 'live']" href="javascript:void(0)" class="btn btn-primary m-2"><i class="fa fa-refresh"></i> Live view</a>
+        <a [routerLink]="[c.id, 'history']" href="javascript:void(0)" class="btn btn-secondary m-2"><i class="fa fa-history"></i> History</a>
       </div>
     </div>
 

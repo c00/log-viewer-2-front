@@ -15,3 +15,7 @@
 <div class="bag-container">
   <app-log-row *ngFor="let b of bags" [bag]="b"></app-log-row>
 </div>
+
+<div *ngIf="errorMessage" class="card text-white bg-danger mb-3">
+  <div class="card-header">Error: {{errorMessage}}</div>
+</div>

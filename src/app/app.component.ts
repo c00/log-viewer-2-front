@@ -15,8 +15,4 @@ export class AppComponent {
     this.log.getConfigs().then(c => this.configs = c);
   }
 
-  public selectDb(c: Config) {
-    this.log.selectedDb = c;
-  }
-
 }

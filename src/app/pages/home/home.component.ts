@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LogService } from '../../../services/logService';
 import { Config } from '../../model/Config';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -8,15 +9,10 @@ import { Config } from '../../model/Config';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  state = 'idle';
-  b = '';
   configs: Config[] = [];
 
-  constructor(log: LogService) {
-    log.dbChanged.subscribe((c) => {
-      console.log(c);
-      this.b += "\nNew one";
-    });
+  constructor(log: LogService, title: Title) {
+    title.setTitle('Log Viewer v2');
 
     log.getConfigs().then(c => this.configs = c);
   }

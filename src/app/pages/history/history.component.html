@@ -95,3 +95,7 @@
     </li>
   </ul>
 </nav>
+
+<div *ngIf="errorMessage" class="card text-white bg-danger mb-3">
+  <div class="card-header">Error: {{errorMessage}}</div>
+</div>

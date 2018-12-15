@@ -28,13 +28,6 @@ export class LogService {
   public get selectedDb() {
     return this._selectedDb;
   }
-  public set selectedDb(c: Config) {
-    if (c === this._selectedDb) return;
-    
-    this._selectedDb = c;
-    this.dbChanged.next(c);
-    this.stopMonitor();
-  }
 
   constructor(
     private api: ApiService,
@@ -48,7 +41,7 @@ export class LogService {
     if (!this.configPromise || refresh) {
       this.configPromise = this.api.get('configs')
       .then((configs) => {
-        if (configs[0] && this._selectedDb.id === -1) this.selectedDb = configs[0];
+        if (configs[0] && this._selectedDb.id === -1) this._selectedDb = configs[0];
         return configs;
       })
       .catch(err => {
@@ -60,9 +53,14 @@ export class LogService {
     return this.configPromise;
   }
 
-  public getConfig(configId: number): Promise<Config> {
-    //return this.getConfigs().then(result => result[configId]);
-    return this.api.get(`config/${configId}`);
+  public setConfig(configId: number): Promise<Config> {
+    return this.getConfigs().then(result => {
+      this._selectedDb = result[configId];
+      this.dbChanged.next(this._selectedDb);
+      this.stopMonitor();
+
+      return this.api.get(`config/${configId}`);
+    });
   }
 
   public getLog(since?: number): Promise<LogResult> {
@@ -93,6 +91,7 @@ export class LogService {
   public stopMonitor() {
     if (this._interval) {
       clearInterval(this._interval);
+      this.lastChecked = 0;
       this._interval = undefined;
     }
   }
