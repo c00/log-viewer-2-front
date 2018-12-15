@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChildren, ViewChild } from '@angular/core';
 import { Config } from '../../model/Config';
 import { LogBag } from '../../model/LogBag';
 import { LogRowComponent } from '../../components/log-row/log-row.component';
@@ -8,6 +8,7 @@ import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { LogResult } from '../../model/ApiResult';
 import { Title } from '@angular/platform-browser';
+import { LevelFilterComponent } from '../../components/level-filter/level-filter.component';
 
 @Component({
   selector: 'app-history',
@@ -18,12 +19,14 @@ export class HistoryComponent implements OnInit {
   config: Config;
   bags: LogBag[] = [];
   @ViewChildren(LogRowComponent) rows;
+  @ViewChild(LevelFilterComponent) levelFilter: LevelFilterComponent;
   allCollapsed = false;
   dateRange: Date[];
   page = 0;
   pageCount = 1;
   loading = false;
   errorMessage: string;
+  filterUpdated = false;
 
   timeRange = {
     date: new Date(),
@@ -106,8 +109,12 @@ export class HistoryComponent implements OnInit {
   }
 
   public doSearch() {
+    //reset stuff
     this.errorMessage = undefined;
+    this.filterUpdated = false;
+    this.loading = true;
 
+    //Adjust dates
     let start, end;
     if (this.useTimeRange) {
       start = + this.timeRange.startTime;
@@ -117,8 +124,11 @@ export class HistoryComponent implements OnInit {
       end = + moment(this.dateRange[1]).endOf('day');
     }
 
-    this.loading = true;
-    this.log.getLogRange(start, end, this.page)
+    //Get filters
+    const levels = this.levelFilter.getSelectedLevels();
+    
+    //Talk to the API
+    this.log.getLogRange(start, end, this.page, {levels})
     .then((r: LogResult) => {
       this.bags = r.log;
       this.pageCount = r.pageCount;
@@ -151,6 +161,10 @@ export class HistoryComponent implements OnInit {
 
     this.page--;
     this.doSearch();
+  }
+
+  public filter() {
+    this.filterUpdated = true;
   }
 
 }

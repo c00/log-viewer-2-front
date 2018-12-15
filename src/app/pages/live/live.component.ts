@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChildren, ViewChild } from '@angular/core';
 import { Config } from '../../model/Config';
 import { LogService } from '../../../services/logService';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { LogBag } from '../../model/LogBag';
 import { LogRowComponent } from '../../components/log-row/log-row.component';
 import { Title } from '@angular/platform-browser';
+import { LevelFilterComponent } from '../../components/level-filter/level-filter.component';
 
 @Component({
   selector: 'app-live',
@@ -15,6 +16,8 @@ export class LiveComponent implements OnInit {
   config: Config;
   lastChecked: number;
   bags: LogBag[] = [];
+  filteredBags: LogBag[] = [];
+  @ViewChild(LevelFilterComponent) levelFilter: LevelFilterComponent;
   @ViewChildren(LogRowComponent) rows;
   allCollapsed = false;
   errorMessage: string;
@@ -66,6 +69,7 @@ export class LiveComponent implements OnInit {
     .then(() => {
       this.log.startMonitor();
       this.title.setTitle(`${this.config.name} - Live Logs`);
+      this.filter();
     })
     .catch((err) => {
       if (err.error && err.error.message) {
@@ -83,6 +87,24 @@ export class LiveComponent implements OnInit {
     } else {
       this.log.startMonitor();
     }
+  }
+
+  public filter(levels?: number[]) {
+    if (!this.levelFilter) {
+      this.filteredBags = this.bags;
+      return;
+    } else if (!levels) {
+      levels = this.levelFilter.getSelectedLevels();
+    }
+
+    if (levels.length === 0 || levels.length === this.levelFilter.filters.length) {
+      //Show all.
+      this.filteredBags = this.bags;
+      return;
+    }
+
+    //Do some filtering
+    this.filteredBags = this.bags.filter((bag: LogBag) => bag.hasLevels(levels));
   }
 
 }

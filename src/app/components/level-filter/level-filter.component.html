@@ -1,0 +1,7 @@
+<div>{{getSummary()}}</div>
+
+<button *ngFor="let f of filters" type="button" class="btn btn-sm" [class.btn-light]="!f.selected" [class.btn-primary]="f.selected" [(ngModel)]="f.selected"
+  btnCheckbox [btnCheckboxTrue]="true" [btnCheckboxFalse]="false" (click)="clicked($event)">
+  {{f.name}}
+</button>
+

@@ -69,10 +69,22 @@ export class LogService {
     .then((r) => LogResult.fromApi(r) );
   }
 
-  public getLogRange(from: number, to: number, page?: number): Promise<LogResult> {
+  public getLogRange(from: number, to: number, page?: number, filters?: any): Promise<LogResult> {
     if (!page) page = 0;
-    return this.api.get(`log/${this._selectedDb.id}/${from}/${to}?page=${page}`)
+
+    const filterString = this.getFilterString(filters);
+    return this.api.get(`log/${this._selectedDb.id}/${from}/${to}?page=${page}${filterString}`)
     .then((r) => LogResult.fromApi(r) );
+  }
+
+  private getFilterString(filters: any): string {
+    if (!filters) return '';
+    let s = '';
+    if (filters.levels) {
+      s += `&levels=[${filters.levels.join(',')}]`;
+    }
+
+    return s;
   }
 
   public startMonitor(since?: number) {

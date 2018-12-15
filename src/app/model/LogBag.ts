@@ -19,7 +19,7 @@ export class LogBag {
 
       this._duration = ms / 1000 + " sec";
     }
-    
+
     return this._duration
   }
 
@@ -32,15 +32,29 @@ export class LogBag {
     return logLevels[level].colorClass;
   }
 
-  static fromApi(response: any) : LogBag{
+  static fromApi(response: any): LogBag {
     let l = new LogBag();
 
     Object.keys(response).forEach(key => {
-        if (response.hasOwnProperty(key) && l.hasOwnProperty(key)){
-            l[key] = response[key];
-        }
+      if (response.hasOwnProperty(key) && l.hasOwnProperty(key)) {
+        l[key] = response[key];
+      }
     });
 
     return l;
-}
+  }
+
+  public hasLevels(levelsWanted: number[]): boolean {
+    let levelsGotten: number[] = [];
+    for (let i of this.logItems) {
+      if (levelsGotten.indexOf(i.level) === -1) levelsGotten.push(i.level);
+    }
+
+    //Intersect the 2 arrays
+    let overlap = levelsWanted.filter(value => -1 !== levelsGotten.indexOf(value));
+
+
+    return overlap.length > 0;
+
+  }
 }

@@ -7,6 +7,11 @@
 
 <form (ngSubmit)="doSearch()">
 
+  <div class="mb-4">
+    <app-level-filter (update)="filter()" #levelFilter class="d-block"></app-level-filter>
+    <div class="text-danger" *ngIf="filterUpdated">Filter updated. Press "Find" to see new results.</div>
+  </div>
+
   <div class="btn-group">
     <label class="btn btn-light" name="date-toggle" [(ngModel)]="useTimeRange" [btnRadio]="false" tabindex="0" role="button">Date
       range</label>

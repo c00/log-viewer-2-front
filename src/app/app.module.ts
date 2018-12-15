@@ -24,6 +24,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { LiveComponent } from './pages/live/live.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { LevelFilterComponent } from './components/level-filter/level-filter.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     LogLevelPipe,
     XdebugMessageComponent,
     SqlMessageComponent,
+    LevelFilterComponent,
   ],
   imports: [
     BrowserModule,
