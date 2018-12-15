@@ -1,3 +1,97 @@
-<p>
-  history works!
-</p>
+<h3>{{config?.name}}</h3>
+
+<span class="float-right">
+  <button class="btn btn-sm btn-default" (click)="toggleCollapseAll()"><i [ngClass]="{ 'fa-chevron-up': !allCollapsed, 'fa-chevron-down': allCollapsed }"
+      class="fa fa-chevron-up"></i> all</button>
+</span>
+
+<form (ngSubmit)="doSearch()">
+
+  <div class="btn-group">
+    <label class="btn btn-light" name="date-toggle" [(ngModel)]="useTimeRange" [btnRadio]="false" tabindex="0" role="button">Date
+      range</label>
+    <label class="btn btn-light" name="time-toggle" [(ngModel)]="useTimeRange" [btnRadio]="true" tabindex="0" role="button">Time
+      range</label>
+  </div>
+
+  <!-- Date range -->
+  <div class="row" *ngIf="!useTimeRange">
+    <div class="col-md-4 form-group">
+      <input type="text" placeholder="Select dates" class="form-control" bsDaterangepicker [bsConfig]="dtpConfig" name="range"
+        [(ngModel)]="dateRange" placement="bottom left" />
+      <span class="form-text text-muted">first: <strong>{{config?.firstLogDate | date : 'yyyy-MM-dd H:mm:ss' }}</strong>
+        Last: <strong>{{config?.lastLogDate | date : 'yyyy-MM-dd H:mm:ss' }}</strong> </span>
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-light"><i class="fa fa-paper-plane"></i> Find</button>
+    </div>
+  </div>
+
+  <!-- Time range -->
+  <div class="time-picker" *ngIf="useTimeRange">
+    <p class="form-text text-muted">
+      first: <strong>{{config?.firstLogDate | date : 'yyyy-MM-dd H:mm:ss' }}</strong>
+      <br>
+      Last: <strong>{{config?.lastLogDate | date : 'yyyy-MM-dd H:mm:ss' }}</strong>
+    </p>
+    <div class="row">
+      <div class="col-md-2 form-group">
+        <label>Date</label>
+        <input type="text" placeholder="Select a day" class="form-control" bsDatepicker [bsConfig]="dtpConfig" name="time-range"
+          [(ngModel)]="timeRange.date" placement="bottom left" (bsValueChange)="dateChanged($event)" />
+      </div>
+      <!-- </div>
+    <div class="row align-items-center"> -->
+      <div class="col-auto">
+        <label>From</label>
+        <timepicker name="start-time" [showSpinners]="false" [showMeridian]="false" [(ngModel)]="timeRange.startTime"></timepicker>
+      </div>
+      <div class="col-auto">
+        <label>To</label>
+        <timepicker name="end-time" [showSpinners]="false" [showMeridian]="false" [(ngModel)]="timeRange.endTime"></timepicker>
+      </div>
+      <div class="col align-self-center">
+        <button type="submit" class="btn btn-light"><i class="fa fa-paper-plane"></i> Find</button>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<nav aria-label="Page navigation" *ngIf="bags.length > 0">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="page === 0">
+      <button type="button" [disabled]="page === 0" class="page-link" (click)="prevPage()" href="javascript:void(0)"><i
+          class="fa fa-arrow-left"></i></button>
+    </li>
+    <li class="page-item disabled"><a class="page-link">{{page + 1}} / {{pageCount}}</a></li>
+    <li class="page-item" [class.disabled]="isLastPage()">
+      <button type="button" class="page-link" [disabled]="isLastPage()" (click)="nextPage()" href="javascript:void(0)"><i
+          class="fa fa-arrow-right"></i></button>
+    </li>
+    <li class="p-2" *ngIf="loading">
+      <i class="fa fa-spinner fa-spin"></i>
+    </li>
+  </ul>
+</nav>
+
+<div class="bag-container">
+  <app-log-row *ngFor="let b of bags" [bag]="b"></app-log-row>
+</div>
+
+<nav aria-label="Page navigation" *ngIf="bags.length > 0">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="page === 0">
+      <button type="button" [disabled]="page === 0" class="page-link" (click)="prevPage()" href="javascript:void(0)"><i
+          class="fa fa-arrow-left"></i></button>
+    </li>
+    <li class="page-item disabled"><a class="page-link">{{page + 1}} / {{pageCount}}</a></li>
+    <li class="page-item" [class.disabled]="isLastPage()">
+      <button type="button" class="page-link" [disabled]="isLastPage()" (click)="nextPage()" href="javascript:void(0)"><i
+          class="fa fa-arrow-right"></i></button>
+    </li>
+    <li class="p-2" *ngIf="loading">
+      <i class="fa fa-spinner fa-spin"></i>
+    </li>
+  </ul>
+</nav>

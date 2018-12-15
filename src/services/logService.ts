@@ -60,13 +60,20 @@ export class LogService {
     return this.configPromise;
   }
 
-  public getConfig(configId: number) {
-    return this.getConfigs().then(result => result[configId]);
+  public getConfig(configId: number): Promise<Config> {
+    //return this.getConfigs().then(result => result[configId]);
+    return this.api.get(`config/${configId}`);
   }
 
   public getLog(since?: number): Promise<LogResult> {
     if (!since) since = 0;
     return this.api.get(`log/${this._selectedDb.id}/${since}`)
+    .then((r) => LogResult.fromApi(r) );
+  }
+
+  public getLogRange(from: number, to: number, page?: number): Promise<LogResult> {
+    if (!page) page = 0;
+    return this.api.get(`log/${this._selectedDb.id}/${from}/${to}?page=${page}`)
     .then((r) => LogResult.fromApi(r) );
   }
 

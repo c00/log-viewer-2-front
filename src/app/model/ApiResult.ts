@@ -2,7 +2,9 @@ import { LogBag } from './LogBag';
 
 export class LogResult {
   log: LogBag[];
-  until: number;
+  until?: number;
+  page?: number;
+  pageCount?: number;
 
   public static fromApi(r: any): LogResult {
     let logs = [];
@@ -10,9 +12,12 @@ export class LogResult {
       logs.push(LogBag.fromApi(l));
     }
 
-    return {
-      log: logs,
-      until: r.until
-    }
+    const lr = new LogResult();
+    lr.log = logs;
+    lr.until = r.until;
+    lr.page = r.page;
+    lr.pageCount = r.pageCount;
+
+    return lr;
   }
 }

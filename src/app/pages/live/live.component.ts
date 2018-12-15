@@ -26,7 +26,6 @@ export class LiveComponent implements OnInit {
     });
 
     this.log.newLogs.subscribe(l => {
-      console.log("Getting news", l);
       this.lastChecked = + new Date();
 
       this.bags.unshift.apply(this.bags, l.log);
