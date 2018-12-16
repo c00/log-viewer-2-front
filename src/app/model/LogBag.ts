@@ -15,7 +15,7 @@ export class LogBag {
     if (!this._duration) {
       if (!this.logItems || this.logItems.length <= 1) this._duration = '0 sec';
 
-      const ms = this.logItems[0].date - this.logItems[this.logItems.length - 1].date;
+      const ms = this.logItems[this.logItems.length - 1].date - this.logItems[0].date;
 
       this._duration = ms / 1000 + " sec";
     }
