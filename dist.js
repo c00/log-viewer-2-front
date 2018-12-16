@@ -4,23 +4,19 @@ const fs = require('fs');
 const path = require("path");
 const { execSync } = require('child_process');
 
-
 //Constants that should maybe be configurable
 const apiRepoPath = "../log-viewer-2-api/";
-/* const base = '/log-viewer-2/'; */
-const base = '/log-viewer-2/log-viewer-2-front/dist/public/';
+const base = '/big-butt/log-viewer-2/';
 const output = 'dist/';
 
-console.log("CREATE BUILD FOR LOG VIEWER 2");
-//todo make configurable
-console.log("Environment: Production");
+console.log("CREATING DIST FOR LOG VIEWER 2");
 
 //Check if API repo exists
 if (!fs.existsSync(apiRepoPath)) {
   console.error("Api repo doesn't exist (or is not int he right place)");
   console.log("Make sure the path exists: " + path.resolve(apiRepoPath));
 
-  return;
+  process.exit(1);
 }
 
 //Delete dist folder
@@ -45,7 +41,6 @@ ncp(apiRepoPath, output, options, (err) => {
   }
 
   console.log("Api copied!");
-
 
   console.log("Build successful! See: " + path.resolve(output));
 });
