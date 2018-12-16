@@ -1,24 +1,21 @@
-<h3>{{config?.name}}</h3>
-
-<span class="float-right">
-  <button class="btn btn-sm btn-default" (click)="toggleCollapseAll()"><i [ngClass]="{ 'fa-chevron-up': !allCollapsed, 'fa-chevron-down': allCollapsed }"
-      class="fa fa-chevron-up"></i> all</button>
-</span>
-
-<form (ngSubmit)="doSearch()">
-
-  <div class="mb-4">
+<div class="row">
+  <div class="col-md">
     <app-level-filter (update)="filter()" #levelFilter class="d-block"></app-level-filter>
     <div class="text-danger" *ngIf="filterUpdated">Filter updated. Press "Find" to see new results.</div>
   </div>
-
-  <div class="btn-group">
-    <label class="btn btn-light" name="date-toggle" [(ngModel)]="useTimeRange" [btnRadio]="false" tabindex="0" role="button">Date
-      range</label>
-    <label class="btn btn-light" name="time-toggle" [(ngModel)]="useTimeRange" [btnRadio]="true" tabindex="0" role="button">Time
-      range</label>
+  <div class="col-md">
+    <app-tag-filter *ngIf="config"></app-tag-filter>
   </div>
+</div>
 
+<div class="btn-group">
+  <label class="btn btn-light" name="date-toggle" [(ngModel)]="useTimeRange" [btnRadio]="false" tabindex="0" role="button">Date
+    range</label>
+  <label class="btn btn-light" name="time-toggle" [(ngModel)]="useTimeRange" [btnRadio]="true" tabindex="0" role="button">Time
+    range</label>
+</div>
+
+<form (ngSubmit)="doSearch()">
   <!-- Date range -->
   <div class="row" *ngIf="!useTimeRange">
     <div class="col-md-4 form-group">
@@ -45,8 +42,7 @@
         <input type="text" placeholder="Select a day" class="form-control" bsDatepicker [bsConfig]="dtpConfig" name="time-range"
           [(ngModel)]="timeRange.date" placement="bottom left" (bsValueChange)="dateChanged($event)" />
       </div>
-      <!-- </div>
-    <div class="row align-items-center"> -->
+    
       <div class="col-auto">
         <label>From</label>
         <timepicker name="start-time" [showSpinners]="false" [showMeridian]="false" [(ngModel)]="timeRange.startTime"></timepicker>
@@ -64,6 +60,11 @@
 </form>
 
 <nav aria-label="Page navigation" *ngIf="bags.length > 0">
+  <span class="float-right">
+    <button class="btn btn-sm btn-default" (click)="toggleCollapseAll()"><i [ngClass]="{ 'fa-chevron-up': !allCollapsed, 'fa-chevron-down': allCollapsed }"
+        class="fa fa-chevron-up"></i> all</button>
+  </span>
+
   <ul class="pagination">
     <li class="page-item" [class.disabled]="page === 0">
       <button type="button" [disabled]="page === 0" class="page-link" (click)="prevPage()" href="javascript:void(0)"><i

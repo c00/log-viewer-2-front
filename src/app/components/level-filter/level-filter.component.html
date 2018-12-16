@@ -1,7 +1,12 @@
-<div>{{getSummary()}}</div>
+<div class="form-group">
+  <label>{{getSummary()}}</label>
 
-<button *ngFor="let f of filters" type="button" class="btn btn-sm" [class.btn-light]="!f.selected" [class.btn-primary]="f.selected" [(ngModel)]="f.selected"
-  btnCheckbox [btnCheckboxTrue]="true" [btnCheckboxFalse]="false" (click)="clicked($event)">
-  {{f.name}}
-</button>
+  <div class="btn-group d-block" role="group">
+    <button *ngFor="let f of filters" type="button" class="btn btn-sm" [class.btn-light]="!f.selected"
+      [class.btn-primary]="f.selected" [(ngModel)]="f.selected" btnCheckbox [btnCheckboxTrue]="true" [btnCheckboxFalse]="false"
+      (click)="clicked($event)">
+      {{f.name}}
+    </button>
+  </div>
 
+</div>

@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api';
-import { Config } from '../app/model/Config';
 import { Subject } from 'rxjs';
 import { LogResult } from 'src/app/model/ApiResult';
-import { LogBag } from '../app/model/LogBag';
+
+import { Config } from '../app/model/Config';
+import { ApiService } from './api';
 
 @Injectable()
 export class LogService {
 
   private configPromise: Promise<Config[]>;
+  private tagsPromise: { [key: string]: Promise<string[]> } = {};
   private _selectedDb: Config = { name: 'none loaded', id: -1 };
   private _busy = false;
   private _interval;
 
   public dbChanged = new Subject<Config>();
   public newLogs = new Subject<LogResult>();
+  public tagsAdded = new Subject<string[]>();
   public lastChecked = 0;
 
   public get busy(): boolean {
@@ -40,14 +42,14 @@ export class LogService {
 
     if (!this.configPromise || refresh) {
       this.configPromise = this.api.get('configs')
-      .then((configs) => {
-        if (configs[0] && this._selectedDb.id === -1) this._selectedDb = configs[0];
-        return configs;
-      })
-      .catch(err => {
-        if (this._selectedDb.id === -1) this._selectedDb.name = "Error loading Configs"
-        throw err;
-      });
+        .then((configs) => {
+          if (configs[0] && this._selectedDb.id === -1) this._selectedDb = configs[0];
+          return configs;
+        })
+        .catch(err => {
+          if (this._selectedDb.id === -1) this._selectedDb.name = "Error loading Configs"
+          throw err;
+        });
     }
 
     return this.configPromise;
@@ -66,7 +68,7 @@ export class LogService {
   public getLog(since?: number): Promise<LogResult> {
     if (!since) since = 0;
     return this.api.get(`log/${this._selectedDb.id}/${since}`)
-    .then((r) => LogResult.fromApi(r) );
+      .then((r) => LogResult.fromApi(r));
   }
 
   public getLogRange(from: number, to: number, page?: number, filters?: any): Promise<LogResult> {
@@ -74,17 +76,31 @@ export class LogService {
 
     const filterString = this.getFilterString(filters);
     return this.api.get(`log/${this._selectedDb.id}/${from}/${to}?page=${page}${filterString}`)
-    .then((r) => LogResult.fromApi(r) );
+      .then((r) => LogResult.fromApi(r));
   }
 
   private getFilterString(filters: any): string {
     if (!filters) return '';
     let s = '';
     if (filters.levels) {
-      s += `&levels=[${filters.levels.join(',')}]`;
+      s += `&levels=${encodeURIComponent(JSON.stringify(filters.levels))}`;
+    }
+
+    if (filters.tags) {
+      s += `&tags=${encodeURIComponent(JSON.stringify(filters.tags))}`;
     }
 
     return s;
+  }
+
+  public getTags(refresh?: boolean): Promise<string[]> {
+    if (this._selectedDb.id === -1) return Promise.resolve([]);
+
+    if (!this.tagsPromise[this._selectedDb.id] || refresh) {
+      this.tagsPromise[this._selectedDb.id] = this.api.get(`tags/${this._selectedDb.id}`);
+    }
+
+    return this.tagsPromise[this._selectedDb.id];
   }
 
   public startMonitor(since?: number) {
@@ -116,20 +132,18 @@ export class LogService {
 
     this._busy = true;
     this.api.get(`log/${this._selectedDb.id}/${this.lastChecked}`)
-    .then((r) => {
-      const lr = LogResult.fromApi(r);
-      this._busy = false;
-      this.newLogs.next(lr);
-      this.lastChecked = lr.until;
-    })
-    .catch((err) => {
-      this._busy = false;
-      console.error("Error in monitor. Killing interval.");
-      this.stopMonitor();
-      throw err;
-    });
+      .then((r) => {
+        const lr = LogResult.fromApi(r);
+        this._busy = false;
+        this.newLogs.next(lr);
+        this.lastChecked = lr.until;
+      })
+      .catch((err) => {
+        this._busy = false;
+        console.error("Error in monitor. Killing interval.");
+        this.stopMonitor();
+        throw err;
+      });
   }
-  
+
 }
-
-

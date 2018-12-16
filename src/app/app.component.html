@@ -1,7 +1,9 @@
 <header class="">
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" [routerLink]="['/']" href="javascript:void(0)">Log Viewer</a>
+    <div class="navbar-brand">
+        <a class="navbar-brand" [routerLink]="['/']" href="javascript:void(0)"><app-logo></app-logo></a><span class="text-muted">{{title}}</span>
+    </div>
 
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">

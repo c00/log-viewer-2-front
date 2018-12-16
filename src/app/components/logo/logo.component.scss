@@ -1,0 +1,15 @@
+$size: 1.5em;
+
+.box {  
+  background-color: #228CDB;
+  width: $size;
+  height: $size;
+  justify-content: center;
+  align-items: center;
+  border-radius: .2em;
+}
+
+.letter {
+  font-size: $size * .5;
+  color: #fff;
+}

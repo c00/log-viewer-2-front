@@ -9,10 +9,14 @@ import { Config } from './model/Config';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  title = "Log Viewer";
   configs: Config[] = [];
   
   constructor(public log: LogService) {
     this.log.getConfigs().then(c => this.configs = c);
+    this.log.dbChanged.subscribe(c => {
+      this.title = c.name;
+    });
   }
 
 }

@@ -1,0 +1,10 @@
+<div class="form-group">
+  <label for="tag-selector">Filter tags</label>
+  <input type="text" [(ngModel)]="value" name="tag-selector" id="tag-selector" [typeahead]="tags" [typeaheadMinLength]="0"
+    (typeaheadOnSelect)="select($event)" class="form-control" placeholder="e.g. 'sql', 'routing', etc.">
+</div>
+
+<div class="tag-container mt-2 mb-4">
+  <span class="badge badge-info" *ngFor="let t of selectedTags">{{t}} <button type="button" (click)="remove(t)" class="btn btn-xs">
+      <i class="fa fa-times"></i></button></span>
+</div>

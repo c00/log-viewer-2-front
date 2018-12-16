@@ -9,6 +9,7 @@ import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { LogResult } from '../../model/ApiResult';
 import { Title } from '@angular/platform-browser';
 import { LevelFilterComponent } from '../../components/level-filter/level-filter.component';
+import { TagFilterComponent } from '../../components/tag-filter/tag-filter.component';
 
 @Component({
   selector: 'app-history',
@@ -20,6 +21,7 @@ export class HistoryComponent implements OnInit {
   bags: LogBag[] = [];
   @ViewChildren(LogRowComponent) rows;
   @ViewChild(LevelFilterComponent) levelFilter: LevelFilterComponent;
+  @ViewChild(TagFilterComponent) tagFilter: TagFilterComponent;
   allCollapsed = false;
   dateRange: Date[];
   page = 0;
@@ -126,9 +128,10 @@ export class HistoryComponent implements OnInit {
 
     //Get filters
     const levels = this.levelFilter.getSelectedLevels();
+    const tags = this.tagFilter.selectedTags;
     
     //Talk to the API
-    this.log.getLogRange(start, end, this.page, {levels})
+    this.log.getLogRange(start, end, this.page, {levels, tags})
     .then((r: LogResult) => {
       this.bags = r.log;
       this.pageCount = r.pageCount;
