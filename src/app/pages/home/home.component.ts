@@ -10,11 +10,15 @@ import { Title } from '@angular/platform-browser';
 })
 export class HomeComponent implements OnInit {
   configs: Config[] = [];
+  errorMessage: string;
 
   constructor(log: LogService, title: Title) {
     title.setTitle('Log Viewer v2');
 
-    log.getConfigs().then(c => this.configs = c);
+    log.getConfigs().then(c => {
+      this.configs = c;
+      if (c.length === 0) this.errorMessage = "No databases configured.";
+    });
   }
 
   ngOnInit() {

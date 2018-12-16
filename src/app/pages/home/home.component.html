@@ -6,10 +6,16 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">{{c.name}}</h5>
-        <a [routerLink]="[c.id, 'live']" href="javascript:void(0)" class="btn btn-primary m-2"><i class="fa fa-refresh"></i> Live view</a>
-        <a [routerLink]="[c.id, 'history']" href="javascript:void(0)" class="btn btn-secondary m-2"><i class="fa fa-history"></i> History</a>
+        <a [routerLink]="[c.id, 'live']" href="javascript:void(0)" class="btn btn-primary m-2"><i class="fa fa-refresh"></i>
+          Live view</a>
+        <a [routerLink]="[c.id, 'history']" href="javascript:void(0)" class="btn btn-secondary m-2"><i class="fa fa-history"></i>
+          History</a>
       </div>
     </div>
 
   </div>
+</div>
+
+<div *ngIf="errorMessage" class="card text-white bg-danger mb-3">
+  <div class="card-header">Error: {{errorMessage}}</div>
 </div>
