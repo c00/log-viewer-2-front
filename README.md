@@ -11,7 +11,11 @@ The structure of the dist folder is:
   - bunch of api files
   - public/     <--Entry point for web server
     - angular app built files.
+    - settings.json <-- You have add this yourself!
     - api/
       - index.php    <-- API entry point
 
 Don't make the `dist` folder accessible from the outside. Only expose the `public` folder.
+
+# Todo
+- Allow editing of settings file from UI

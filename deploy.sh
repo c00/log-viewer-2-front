@@ -15,6 +15,8 @@
 REMOTE=bessy
 # The remote path to create the release in (The release will have its own directory in here)
 REMOTE_PATH=/var/www/bessy/log-viewer-2
+# The Base href for the client.
+BASE=/
 
 #Don't touch anything below here
 SKIP_BUILD=
@@ -23,7 +25,8 @@ NEW=$(date +"%Y%m%d-%H%M%S")
 while getopts "r:p:e:b:s" opt; do
     case $opt in
     r) REMOTE=$OPTARG ;; 
-	  p) REMOTE_PATH=$OPTARG ;;
+    b) BASE=$OPTARG ;;
+    p) REMOTE_PATH=$OPTARG ;;
     s) SKIP_BUILD=1 ;;
     ?) echo "Parameter error."; exit ;;
     esac
@@ -31,8 +34,8 @@ done
 
 if [ -z "$SKIP_BUILD" ]
 then
-    echo "Making dist"
-    node dist || { echo 'Creating "dist" failed.' ; exit 1; }
+    #Creating local dist
+    node dist --base $BASE || { echo 'Creating "dist" failed.' ; exit 1; }
 else
     echo "Skipping local build..."
 fi
@@ -47,7 +50,7 @@ cd dist && zip -r .build.zip * . >/dev/null && cd .. || { echo 'Compressing file
 
 echo Deploying to $REMOTE in $REMOTE_PATH...
 # Create remote dir
-ssh $REMOTE "mkdir $REMOTE_PATH/$NEW" || { echo 'Create remote dir failed.' ; exit 1; }
+ssh $REMOTE "mkdir -p $REMOTE_PATH/$NEW" || { echo 'Create remote dir failed.' ; exit 1; }
 
 # Copy archive
 scp dist/.build.zip $REMOTE:$REMOTE_PATH/$NEW || { echo 'SCP deploy failed.' ; exit 1; }
