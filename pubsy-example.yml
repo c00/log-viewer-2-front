@@ -1,0 +1,39 @@
+tasks: 
+  - name: rm
+    description: Clearing the build folder
+    params: 
+      targets: dist/* 
+  - name: ngBuild
+    description: 'Building Angular App'
+    params: 
+      base: /log-viewer-2/
+      output: public/
+  - name: copy
+    label: api-copy
+    description: Copying API files into it
+    params: 
+      cwdSource: '../log-viewer-2-api'
+      source: 
+        - '**/*'
+      exclude: 
+        - '.idea/**/*'
+        - '.git/**/*'
+        - '**/settings.json'
+  - name: deployRemote
+    description: Deploying remotely
+    label: deploy
+    params: 
+      source: '**/*'
+  - name: symlinkRemote
+    description: Link settings file
+    params: 
+      source: '../settings.json'
+      dest: '%deployPath%%buildId%/settings.json'
+environments:
+  - name: myServer
+    default: true
+    buildPath: dist/
+    isRemote: true
+    host: "1.2.3.4"
+    deployPath: /var/www/log-viewer-2/
+    keepDeployments: 5
