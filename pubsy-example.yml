@@ -3,11 +3,13 @@ tasks:
     description: Clearing the build folder
     params: 
       targets: dist/* 
+
   - name: ngBuild
     description: 'Building Angular App'
     params: 
       base: /log-viewer-2/
-      output: public/
+      dest: public/
+
   - name: copy
     label: api-copy
     description: Copying API files into it
@@ -19,16 +21,19 @@ tasks:
         - '.idea/**/*'
         - '.git/**/*'
         - '**/settings.json'
+
   - name: deployRemote
     description: Deploying remotely
     label: deploy
     params: 
       source: '**/*'
+
   - name: symlinkRemote
     description: Link settings file
     params: 
       source: '../settings.json'
       dest: '%deployPath%%buildId%/settings.json'
+
 environments:
   - name: myServer
     default: true
