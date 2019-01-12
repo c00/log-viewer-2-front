@@ -1,0 +1,42 @@
+@import '../../../styles/colors';
+
+.circle {
+  width: 50px;
+  height: 50px;
+  margin: 8px;
+  border-radius: 50%;
+  text-align: center;
+  color: #fff;
+  display: inline-block;
+  vertical-align: middle;
+  
+}
+
+.audit { 
+  background-color: $primary;
+  border: 1px solid darken($primary, 5);
+}
+.no-log { 
+  background-color: $secondary;
+  border: 1px solid darken($secondary, 5);
+}
+.error { 
+  background-color: $danger;
+  border: 1px solid darken($danger, 5);
+}
+.warning { 
+  background-color: $warning;
+  border: 1px solid darken($warning, 5);
+}
+.info { 
+  background-color: $info;
+  border: 1px solid darken($info, 5);
+}
+.debug { 
+  background-color: $teal;
+  border: 1px solid darken($teal, 5);
+}
+.extra-debug { 
+  background-color: lighten($teal, 10);
+  border: 1px solid darken(lighten($teal, 10), 5);
+}

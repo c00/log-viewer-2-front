@@ -28,6 +28,10 @@ import { HomeComponent } from './pages/home/home.component';
 import { LiveComponent } from './pages/live/live.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { LogoComponent } from './components/logo/logo.component';
+import { StatsComponent } from './pages/stats/stats.component';
+import { ChartjsModule } from '@ctrl/ngx-chartjs';
+import { TestLevelsComponent } from './components/test-levels/test-levels.component';
+
 
 @NgModule({
   declarations: [
@@ -44,6 +48,8 @@ import { LogoComponent } from './components/logo/logo.component';
     LevelFilterComponent,
     TagFilterComponent,
     LogoComponent,
+    StatsComponent,
+    TestLevelsComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +64,7 @@ import { LogoComponent } from './components/logo/logo.component';
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     InlineSVGModule.forRoot({ baseUrl: '/assets/svg/' }),
+    ChartjsModule,
   ],
   providers: [
     ApiService,

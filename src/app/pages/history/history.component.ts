@@ -5,11 +5,11 @@ import { LogRowComponent } from '../../components/log-row/log-row.component';
 import { LogService } from '../../../services/logService';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
-import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { LogResult } from '../../model/ApiResult';
 import { Title } from '@angular/platform-browser';
 import { LevelFilterComponent } from '../../components/level-filter/level-filter.component';
 import { TagFilterComponent } from '../../components/tag-filter/tag-filter.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-history',

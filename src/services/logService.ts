@@ -4,6 +4,9 @@ import { LogResult } from 'src/app/model/ApiResult';
 
 import { Config } from '../app/model/Config';
 import { ApiService } from './api';
+import { StatsResult } from '../app/model/ApiResult';
+import { LevelStat, UrlStat } from '../app/model/Stats';
+import { cereal } from 'src/app/model/Cerealize';
 
 @Injectable()
 export class LogService {
@@ -55,28 +58,33 @@ export class LogService {
     return this.configPromise;
   }
 
-  public setConfig(configId: number): Promise<Config> {
-    return this.getConfigs().then(result => {
-      this._selectedDb = result[configId];
-      this.dbChanged.next(this._selectedDb);
-      this.stopMonitor();
-
-      return this.api.get(`config/${configId}`);
-    });
+  public async setConfig(configId: number): Promise<Config> {
+    const result = await this.getConfigs();
+    this._selectedDb = result[configId];
+    this.dbChanged.next(this._selectedDb);
+    this.stopMonitor();
+    return this.api.get(`config/${configId}`);
   }
 
-  public getLog(since?: number): Promise<LogResult> {
+  public async getLog(since?: number): Promise<LogResult> {
     if (!since) since = 0;
-    return this.api.get(`log/${this._selectedDb.id}/${since}`)
-      .then((r) => LogResult.fromApi(r));
+    const r = await this.api.get(`log/${this._selectedDb.id}/${since}`);
+    return LogResult.fromApi(r);
   }
 
-  public getLogRange(from: number, to: number, page?: number, filters?: any): Promise<LogResult> {
+  public async getLogStats(start: number, end: number): Promise<StatsResult> {
+    const r = await this.api.get(`stats/${this._selectedDb.id}/${start}/${end}`);
+    r.levelStats = cereal.toArrayOf(LevelStat, r.levelStats);
+    r.urlStats = cereal.toArrayOf(UrlStat, r.urlStats);
+    return r;
+  }
+
+  public async getLogRange(from: number, to: number, page?: number, filters?: any): Promise<LogResult> {
     if (!page) page = 0;
 
     const filterString = this.getFilterString(filters);
-    return this.api.get(`log/${this._selectedDb.id}/${from}/${to}?page=${page}${filterString}`)
-      .then((r) => LogResult.fromApi(r));
+    const r = await this.api.get(`log/${this._selectedDb.id}/${from}/${to}?page=${page}${filterString}`);
+    return LogResult.fromApi(r);
   }
 
   private getFilterString(filters: any): string {

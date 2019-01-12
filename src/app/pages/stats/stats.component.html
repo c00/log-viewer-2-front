@@ -1,0 +1,32 @@
+<form (ngSubmit)="doSearch()">
+  <!-- Date range -->
+  <div class="row">
+    <div class="col-md-4 form-group">
+      <input type="text" placeholder="Select dates" class="form-control" bsDaterangepicker [bsConfig]="dtpConfig" name="range"
+        [(ngModel)]="dateRange" placement="bottom left" />
+      <span class="form-text text-muted">first: <strong>{{config?.firstLogDate | date : 'yyyy-MM-dd H:mm:ss' }}</strong>
+        Last: <strong>{{config?.lastLogDate | date : 'yyyy-MM-dd H:mm:ss' }}</strong> </span>
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-light"><i class="fa fa-paper-plane"></i> Find</button>
+    </div>
+  </div>
+
+</form>
+
+<div *ngIf="errorMessage" class="card text-white bg-danger mb-3">
+  <div class="card-header">Error: {{errorMessage}}</div>
+</div>
+
+<!-- <app-test-levels></app-test-levels> -->
+
+<div class="row">
+  <div class="col">
+    <h3>Level frequency (in items)</h3>
+    <ngx-chartjs *ngIf="levelPie" [data]="levelPie" type="pie"></ngx-chartjs>
+  </div>
+  <div class="col">
+    <h3>Request errors</h3>
+    <ngx-chartjs *ngIf="urlPie" [data]="urlPie" type="pie"></ngx-chartjs>
+  </div>
+</div>

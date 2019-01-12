@@ -1,4 +1,5 @@
 import { LogBag } from './LogBag';
+import { LevelStat } from './Stats';
 
 export class LogResult {
   log: LogBag[];
@@ -20,4 +21,9 @@ export class LogResult {
 
     return lr;
   }
+}
+
+export interface StatsResult {
+  urlStats: any;
+  levelStats: LevelStat[];
 }
