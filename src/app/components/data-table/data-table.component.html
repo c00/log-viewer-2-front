@@ -1,0 +1,17 @@
+<table [ngClass]="tableClass">
+  <thead>
+    <tr>
+      <th *ngFor="let c of columns">
+        <a href="javascript:void(0)" class="header-link" (click)="sort(c.prop)">
+          {{c.name}} <i [style.visibility]="sortOn === c.prop ? 'visible': 'hidden'" [class.fa-chevron-up]="sortAsc" [class.fa-chevron-down]="!sortAsc" class="fa chevron"></i>
+        </a>
+
+      </th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let r of rows">
+    <tr>
+      <td *ngFor="let c of columns">{{ getValue(r, c.prop) }}</td>
+    </tr>
+  </tbody>
+</table>

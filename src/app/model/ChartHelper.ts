@@ -20,38 +20,42 @@ export class ChartHelper {
     'rgb(96, 125, 139)',
   ]
 
-  public static toPie(inputData: any, valueProp?: string, labelProp?: string, bgColorProp?: string, borderColorProp?: string): PieData {
+  public static toPieSeries(inputData: any, valueProp?: string, labelProp?: string): PieSeries {
     //Set defaults
     if (!valueProp) valueProp = 'value';
     if (!labelProp) labelProp = 'name';
-    if (!bgColorProp) bgColorProp = 'bgColor';
-    if (!borderColorProp) borderColorProp = 'borderColor';
 
-    //const result: PieData = { datasets : [{ data: []}] };
-    const dataset = { data: [], backgroundColor: [], borderColor: [] };
-    const labels = [];
+    const pieData : PieSeries = { data: [] };
+    const dataset: DataPoint[] = [];
 
-    let i = 0;
     for (let d of inputData) {
       if (!d[valueProp]){
         console.warn(`Value ${valueProp} not found.`, d);
         continue;
       }
-      dataset.data.push(d[valueProp]);
-      dataset.backgroundColor.push(d[bgColorProp] || this.DEFAULT_COLORS[i]) ;
-      if (d[borderColorProp]) dataset.borderColor.push(d[borderColorProp]);
-      labels.push(d[labelProp]);
 
-      i++;
+      const dp: DataPoint = {
+        name: d[labelProp],
+        y: d[valueProp],
+      };
+      dataset.push(dp); 
     }
 
-    return {labels, datasets: [dataset]};
+    pieData.data = dataset;
+
+    return pieData;
   }
 }
 
-export interface PieData {
-  datasets: { data: Number[] }[];
-  labels?: string[];
-  backgroundColor?: string[];
-  borderColor?: string[];
+export interface PieSeries {
+  name?: string;
+  colorByPoint?: boolean;
+  data: DataPoint[];
+}
+
+export interface DataPoint {
+  name: string;
+  y: number;
+  selected?: boolean;
+  sliced?: boolean;
 }

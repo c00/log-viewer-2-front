@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-md-4 form-group">
       <input type="text" placeholder="Select dates" class="form-control" bsDaterangepicker [bsConfig]="dtpConfig" name="range"
-        [(ngModel)]="dateRange" placement="bottom left" />
+        [(ngModel)]="dateRange" (bsValueChange)="dateChanged($event)" placement="bottom left" />
       <span class="form-text text-muted">first: <strong>{{config?.firstLogDate | date : 'yyyy-MM-dd H:mm:ss' }}</strong>
         Last: <strong>{{config?.lastLogDate | date : 'yyyy-MM-dd H:mm:ss' }}</strong> </span>
     </div>
@@ -18,15 +18,17 @@
   <div class="card-header">Error: {{errorMessage}}</div>
 </div>
 
-<!-- <app-test-levels></app-test-levels> -->
-
 <div class="row">
-  <div class="col">
-    <h3>Level frequency (in items)</h3>
-    <ngx-chartjs *ngIf="levelPie" [data]="levelPie" type="pie"></ngx-chartjs>
+  <div class="col-sm">
+    <app-chart title="Level frequency (in items)" [series]="levelPie"></app-chart>
+
+    <app-data-table [columns]="levelCols" [rows]="stats?.levelStats"></app-data-table>
+
   </div>
-  <div class="col">
-    <h3>Request errors</h3>
-    <ngx-chartjs *ngIf="urlPie" [data]="urlPie" type="pie"></ngx-chartjs>
+  <div class="col-sm">
+    <app-chart title="Request errors" [series]="urlPie"></app-chart>
+
+    <app-data-table [columns]="urlCols" [rows]="stats?.urlStats"></app-data-table>
+
   </div>
 </div>

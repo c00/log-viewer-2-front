@@ -6,8 +6,10 @@ import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
 
 import { LogService } from '../../../services/logService';
 import { StatsResult } from '../../model/ApiResult';
-import { ChartHelper, PieData } from '../../model/ChartHelper';
+import { ChartHelper, PieSeries } from '../../model/ChartHelper';
 import { Config } from '../../model/Config';
+import { LevelStat } from 'src/app/model/Stats';
+import { UrlStat } from '../../model/Stats';
 
 @Component({
   selector: 'app-stats',
@@ -22,13 +24,26 @@ export class StatsComponent implements OnInit {
     moment().endOf('isoWeek').toDate(),
   ];
   loading = false;
-  stats: StatsResult;
   dtpConfig: Partial<BsDaterangepickerConfig> = {
     rangeInputFormat: 'DD-MM-YYYY',
   };
 
-  levelPie: PieData;
-  urlPie: PieData;
+  stats: StatsResult;
+  levelCols = LevelStat.getTableColumns();
+  urlCols = UrlStat.getTableColumns();
+
+  levelPie: PieSeries;
+  urlPie: PieSeries;
+
+  //debug stuff
+  rows = [
+    { meuk: 123, ids: 1, name: 'wef'},
+    { meuk: 123, ids: 2, name: 'bar'},
+  ]
+  cols = [
+    { prop: 'ids', name: 'The number' },
+    { prop: 'name', name: 'The name' },
+  ];
 
   constructor(
     public log: LogService,
@@ -64,6 +79,10 @@ export class StatsComponent implements OnInit {
 
   public ngOnInit() { };
 
+  public async dateChanged(e: Event) {
+    if (e && this.config) this.doSearch();
+  }
+
   public async doSearch() {
     //reset stuff
     this.errorMessage = undefined;
@@ -77,8 +96,8 @@ export class StatsComponent implements OnInit {
     try {
       this.stats = await this.log.getLogStats(start, end);
       this.loading = false;
-      this.levelPie = ChartHelper.toPie(this.stats.levelStats, 'itemCount');
-      this.urlPie = ChartHelper.toPie(this.stats.urlStats, 'bagCount');
+      this.levelPie = ChartHelper.toPieSeries(this.stats.levelStats, 'itemCount');
+      this.urlPie = ChartHelper.toPieSeries(this.stats.urlStats, 'bagCount');
     } catch (err) {
       this.loading = false;
       if (err.error && err.error.message) {
