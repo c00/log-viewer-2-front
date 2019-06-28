@@ -19,3 +19,14 @@ Don't make the `dist` folder accessible from the outside. Only expose the `publi
 
 # Todo
 - Allow editing of settings file from UI
+
+# Docker build
+
+```
+docker build -t log-viewer-2 .
+```
+
+The built image allowes for a env settings: 
+
+- `ANGULAR_BASE_HREF` that will set the <base href=""> tag and the nginx conf. It defaults to `/lv2/`.
+- `ANGULAR_API_URL` that will set the location of the api. Defaults to `api/`.
