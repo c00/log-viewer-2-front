@@ -1,15 +1,15 @@
 version: '3'
 services:
-  php:
+  php-1:
     image: crispyduck/log-viewer-2-api:latest
     volumes:
       - ./api-settings-example.json:/app/settings.json
   nginx:
-    # build: ../.
-    image: crispyduck/log-viewer-2:latest
+    build: ../.
+    # image: crispyduck/log-viewer-2:latest
     ports:
       - "80:80"
-    # environment: 
-    #   - ANGULAR_BASE_HREF=/some/sub/dir/
+    environment: 
+      - ANGULAR_PHP_HOST=php-1
     depends_on:
-      - php
+      - php-1
