@@ -9,7 +9,7 @@ services:
     image: crispyduck/log-viewer-2:latest
     ports:
       - "80:80"
-    environment: 
-      - ANGULAR_BASE_HREF=/logging/2/
+    # environment: 
+    #   - ANGULAR_BASE_HREF=/some/sub/dir/
     depends_on:
       - php
