@@ -1,12 +1,13 @@
 version: '3'
 services:
   php-1:
+    # build: ../../log-viewer-2-api/.
     image: crispyduck/log-viewer-2-api:latest
     volumes:
       - ./api-settings-example.json:/app/settings.json
   nginx:
-    build: ../.
-    # image: crispyduck/log-viewer-2:latest
+    # build: ../.
+    image: crispyduck/log-viewer-2:latest
     ports:
       - "80:80"
     environment: 
