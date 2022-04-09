@@ -26,7 +26,7 @@
     "font-awesome": "^4.7.0",
     "highcharts": "^9.0.0",
     "jquery": "^3.4.1",
-    "moment": "^2.23.0",
+    "moment": "^2.29.2",
     "ng-inline-svg": "^8.3.0",
     "ngx-bootstrap": "^3.1.4",
     "popper": "^1.0.1",
